@@ -5,6 +5,11 @@ body {
   margin: 0;
 }
 
+a {
+  text-decoration: none;
+  color: #337ab7;
+}
+
 label {
   font-weight: bold;
 }
@@ -29,4 +34,8 @@ label {
 .col-acoes {
   width: 90px;
   text-align: center;
+}
+
+.ui-dropdown-filter-container {
+  width: 100%;
 }
