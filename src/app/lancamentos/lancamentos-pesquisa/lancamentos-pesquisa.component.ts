@@ -1,12 +1,13 @@
+import { ConfirmationService } from 'primeng/components/common/api';
 import { LancamentoService, LancamentoFiltro } from './../lancamento.service';
-import { Component, OnInit, LOCALE_ID, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
+import { ToastyService } from 'ng2-toasty';
 
 @Component({
   selector: 'app-lancamentos-pesquisa',
   templateUrl: './lancamentos-pesquisa.component.html',
-  styleUrls: ['./lancamentos-pesquisa.component.css'],
-  providers: [{provide: LOCALE_ID, useValue: 'pt-BR'}]
+  styleUrls: ['./lancamentos-pesquisa.component.css']
 })
 export class LancamentosPesquisaComponent implements OnInit {
 
@@ -18,7 +19,10 @@ export class LancamentosPesquisaComponent implements OnInit {
   ngOnInit() {
   }
 
-  constructor(private lancamentoService: LancamentoService) {}
+  constructor(
+      private lancamentoService: LancamentoService,
+      private toasty: ToastyService,
+      private confirmation: ConfirmationService) {}
 
   pesquisar(pagina = 0) {
     this.filtro.pagina = pagina;
@@ -35,6 +39,16 @@ export class LancamentosPesquisaComponent implements OnInit {
     this.pesquisar(pagina);
   }
 
+  confirmarExclusao(lancamento: any) {
+    this.confirmation.confirm({
+      message: 'Tem certeza que deseja excluir ?',
+      accept: () => {
+        this.excluir(lancamento);
+      }
+    });
+
+  }
+
   excluir(lancamento: any) {
     this.lancamentoService.excluir(lancamento.codigo)
         .then(() => {
@@ -44,6 +58,8 @@ export class LancamentosPesquisaComponent implements OnInit {
           } else {
             this.grid.first = 0;
           }
+
+          this.toasty.success('Lançamento excluido com sucesso!');
         });
   }
 }
