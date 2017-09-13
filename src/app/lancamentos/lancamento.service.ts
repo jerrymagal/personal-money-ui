@@ -1,5 +1,6 @@
 import { Http, Headers, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
+import { ConfirmationService } from 'primeng/components/common/api';
 
 import 'rxjs/add/operator/toPromise';
 import * as moment from 'moment';
@@ -17,12 +18,12 @@ export class LancamentoService {
 
   lancamentosUrl = 'http://localhost:8080/lancamentos';
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private confirmation: ConfirmationService) { }
 
   pesquisar(filtro: LancamentoFiltro): Promise<any> {
 
-    const headers = new Headers();
     const params = new URLSearchParams();
+    const headers = new Headers();
 
     headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
 
@@ -42,19 +43,18 @@ export class LancamentoService {
     }
 
     return this.http.get(`${this.lancamentosUrl}?resumo`, { headers, search: params })
-      .toPromise()
-      .then(response => {
-        const responseJson = response.json();
-        const lancamentos = responseJson.content;
+        .toPromise()
+        .then(response => {
+          const responseJson = response.json();
+          const lancamentos = responseJson.content;
 
-        const resultado = {
-          lancamentos,
-          total: responseJson.totalElements
-        };
+          const resultado = {
+            lancamentos,
+            total: responseJson.totalElements
+          };
 
-        return resultado;
-    });
-
+          return resultado;
+        });
   }
 
   excluir(codigo: number): Promise<void> {
@@ -62,7 +62,7 @@ export class LancamentoService {
     headers.append('Authorization', 'Basic YWRtaW5AYWxnYW1vbmV5LmNvbTphZG1pbg==');
 
     return this.http.delete(`${this.lancamentosUrl}/${codigo}`, { headers })
-           .toPromise()
-           .then(() => null);
+      .toPromise()
+      .then(() => null);
   }
 }

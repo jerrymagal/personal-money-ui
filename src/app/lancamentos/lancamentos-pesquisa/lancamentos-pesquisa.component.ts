@@ -1,3 +1,4 @@
+import { ErrorHandlerService } from './../../core/error-handler.service';
 import { ConfirmationService } from 'primeng/components/common/api';
 import { LancamentoService, LancamentoFiltro } from './../lancamento.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -22,7 +23,9 @@ export class LancamentosPesquisaComponent implements OnInit {
   constructor(
       private lancamentoService: LancamentoService,
       private toasty: ToastyService,
-      private confirmation: ConfirmationService) {}
+      private confirmation: ConfirmationService,
+      private errorHandle: ErrorHandlerService
+  )  {}
 
   pesquisar(pagina = 0) {
     this.filtro.pagina = pagina;
@@ -31,7 +34,8 @@ export class LancamentosPesquisaComponent implements OnInit {
         .then(resultado => {
           this.totalRegistros = resultado.total,
           this.lancamentos = resultado.lancamentos;
-        });
+        })
+        .catch(erro => this.errorHandle.handle(erro));
   }
 
   navergar(event: LazyLoadEvent) {
@@ -46,7 +50,6 @@ export class LancamentosPesquisaComponent implements OnInit {
         this.excluir(lancamento);
       }
     });
-
   }
 
   excluir(lancamento: any) {
@@ -60,6 +63,7 @@ export class LancamentosPesquisaComponent implements OnInit {
           }
 
           this.toasty.success('Lançamento excluido com sucesso!');
-        });
+        })
+        .catch(erro => this.errorHandle.handle(erro));
   }
 }
