@@ -1,10 +1,10 @@
 <div class="container">
 
-  <form #f="ngForm" (ngSubmit)="salvar(f)">
+  <form #f="ngForm" (ngSubmit)="salvar()">
     <div class="ui-g">
 
       <div class="ui-g-12">
-        <h1>Nova Pessoa</h1>
+        <h1>{{ titulo }}</h1>
       </div>
 
       <div class="ui-g-12 ui-fluid">
@@ -61,8 +61,8 @@
 
       <div class="ui-g-12">
         <button pButton type="submit" label="Salvar" [disabled]="f.invalid"></button>
-        <button pButton type="button" label="Novo" class="ui-button-info"></button>
-        <a href="javascript:;">Voltar para pesquisa</a>
+        <button pButton type="button" label="Novo" class="ui-button-info" (click)="novo(f)"></button>
+        <a routerLink="/pessoas">Voltar para pesquisa</a>
       </div>
 
     </div>

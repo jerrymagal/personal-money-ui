@@ -1,5 +1,7 @@
+import { Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ToastyService } from 'ng2-toasty';
 
@@ -8,7 +10,6 @@ import { PessoaService } from './../../pessoas/pessoa.service';
 import { CategoriaService } from './../../categoria/categoria.service';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { Lancamento } from './../../core/model';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-lancamento-cadastro',
@@ -26,6 +27,7 @@ export class LancamentoCadastroComponent implements OnInit {
 
   categorias = [];
   pessoas = [];
+  titulo = null;
   lancamento = new Lancamento();
 
   constructor(
@@ -34,7 +36,8 @@ export class LancamentoCadastroComponent implements OnInit {
     private lancamentoService: LancamentoService,
     private toasty: ToastyService,
     private erroHangle: ErrorHandlerService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private navegation: Router
   ) { }
 
   ngOnInit() {
@@ -52,43 +55,45 @@ export class LancamentoCadastroComponent implements OnInit {
 
       if (codigoLancamento) {
         this.carregarLancamento(codigoLancamento);
+      } else {
+        this.atualizarTitulo();
       }
 
       this.carregarCategorias();
       this.carregarPessoas();
-  }
+    }
 
-  get editando() {
-    return Boolean(this.lancamento.codigo);
-  }
+    get editando() {
+      return Boolean(this.lancamento.codigo);
+    }
 
-  carregarLancamento(codigo: number) {
-    this.lancamentoService.buscarPorCodigo(codigo)
-        .then(lancamento => {
-          this.lancamento = lancamento;
+    carregarLancamento(codigo: number) {
+      this.lancamentoService.buscarPorCodigo(codigo)
+      .then(lancamento => {
+        this.lancamento = lancamento;
+        this.atualizarTitulo();
         })
         .catch(erro => this.erroHangle.handle(erro));
   }
 
-  salvar(form: FormControl) {
+  salvar() {
     if (this.editando) {
-      this.atualizar(form);
+      this.atualizar();
     } else {
-      this.adicionar(form);
+      this.adicionar();
     }
   }
 
-  private adicionar(form: FormControl) {
+  private adicionar() {
     this.lancamentoService.adicionar(this.lancamento)
         .then(() => {
           this.toasty.success('Lançamento adicionado com sucesso!');
-          form.reset();
-          this.lancamento = new Lancamento();
+          this.navegation.navigate(['/lancamentos']);
         })
         .catch(erro => this.erroHangle.handle(erro));
   }
 
-  private atualizar(form: FormControl) {
+  private atualizar() {
     this.lancamentoService.atualizar(this.lancamento)
         .then(lancamento => {
           this.lancamento = lancamento;
@@ -111,5 +116,22 @@ export class LancamentoCadastroComponent implements OnInit {
         this.pessoas = pessoas.map(p => ({label: p.nome, value: p.codigo}));
       })
       .catch(erro => this.erroHangle.handle(erro));
+  }
+
+  novo(form: FormControl) {
+    form.reset();
+    setTimeout(function() {
+      this.lancamento = new Lancamento();
+    }.bind(this), 1);
+    this.navegation.navigate(['/lancamentos/novo']);
+  }
+
+  private atualizarTitulo() {
+
+    if (this.editando) {
+      this.titulo = 'Editar Lançamento';
+    } else {
+      this.titulo = 'Novo Lançamento';
+    }
   }
 }

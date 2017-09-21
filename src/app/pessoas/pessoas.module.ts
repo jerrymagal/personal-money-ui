@@ -1,3 +1,4 @@
+import { PessoasRountingModule } from './pessoas-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -22,15 +23,13 @@ import { SharedModule } from './../shared/shared.module';
     DataTableModule,
     InputMaskModule,
     TooltipModule,
-    SharedModule
+    SharedModule,
+    PessoasRountingModule
   ],
   declarations: [
     PessoaCadastroComponent,
     PessoasPesquisaComponent
   ],
-  exports: [
-    PessoaCadastroComponent,
-    PessoasPesquisaComponent
-  ]
+  exports: []
 })
 export class PessoasModule { }
