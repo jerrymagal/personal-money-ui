@@ -7,12 +7,14 @@ import { ConfirmDialogModule } from 'primeng/components/confirmdialog/confirmdia
 import { ConfirmationService } from 'primeng/components/common/api';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ToastyModule } from 'ng2-toasty';
+import { JwtHelper } from 'angular2-jwt';
 
 import { ErrorHandlerService } from './error-handler.service';
 import { LancamentoService } from '../lancamentos/lancamento.service';
 import { CategoriaService } from './../categoria/categoria.service';
 import { PessoaService } from '../pessoas/pessoa.service';
 import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
+import { OauthService } from './../seguranca/oauth.service';
 
 @NgModule({
   imports: [
@@ -29,6 +31,8 @@ import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component'
     PessoaService,
     ConfirmationService,
     CategoriaService,
+    OauthService,
+    JwtHelper,
     Title,
     {provide: LOCALE_ID, useValue: 'pt-BR'}]
 })
