@@ -1,3 +1,4 @@
+import { OauthService } from './../../seguranca/oauth.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ErrorHandlerService } from './../../core/error-handler.service';
@@ -23,6 +24,7 @@ export class LancamentosPesquisaComponent implements OnInit {
 
   constructor(
       private lancamentoService: LancamentoService,
+      private auth: OauthService,
       private toasty: ToastyService,
       private confirmation: ConfirmationService,
       private errorHandle: ErrorHandlerService
@@ -66,5 +68,9 @@ export class LancamentosPesquisaComponent implements OnInit {
           this.toasty.success('Lançamento excluido com sucesso!');
         })
         .catch(erro => this.errorHandle.handle(erro));
+  }
+
+  temPermissaoExclusao() {
+    return this.auth.temPermissao('ROLE_REMOVER_LANCAMENTO');
   }
 }

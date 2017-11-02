@@ -9,17 +9,25 @@ export class ErrorHandlerService {
 
   handle(errorResponse: any) {
     let msg: string;
-    msg = 'Erro ao processar a solicitação. Tente novamente';
-
-    console.log(errorResponse);
 
     if (typeof errorResponse === 'string') {
       msg = errorResponse;
     } else if (errorResponse instanceof Response && errorResponse.status >= 400 && errorResponse.status <= 499) {
       let errors;
+      msg = 'Erro ao processar a solicitação.';
 
-      errors = errorResponse.json();
-      msg = errors[0].mensagemUsuario;
+      if (errorResponse.status === 403) {
+        msg = 'Sem permissão para executar esta ação.';
+      }
+
+      try {
+        errors = errorResponse.json();
+        msg = errors[0].mensagemUsuario;
+      } catch (e) {}
+
+    } else {
+      msg = 'Erro ao processar o envio. . Tente novamente.';
+      console.log('Ocorreu um erro', errorResponse);
     }
 
     this.toasty.error(msg);
