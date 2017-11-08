@@ -15,6 +15,7 @@ import { CategoriaService } from './../categoria/categoria.service';
 import { PessoaService } from '../pessoas/pessoa.service';
 import { PaginaNaoEncontradaComponent } from './pagina-nao-encontrada.component';
 import { OauthService } from './../seguranca/oauth.service';
+import { NaoAutorizadoComponent } from './nao-autorizado.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,7 @@ import { OauthService } from './../seguranca/oauth.service';
     ConfirmDialogModule,
     RouterModule
   ],
-  declarations: [NavbarComponent, PaginaNaoEncontradaComponent],
+  declarations: [NavbarComponent, PaginaNaoEncontradaComponent, NaoAutorizadoComponent],
   exports: [NavbarComponent, ToastyModule, ConfirmDialogModule],
   providers: [
     ErrorHandlerService,

@@ -67,6 +67,16 @@ export class OauthService {
     return this.jwtPayload && this.jwtPayload.authorities.includes(permissao);
   }
 
+  temQualquerPermissao(roles) {
+    for (const role of roles) {
+      if (this.temPermissao(role)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   private armazenarToken(token: string) {
     this.jwtPayload = this.jwtHelper.decodeToken(token);
     localStorage.setItem('token', token);
