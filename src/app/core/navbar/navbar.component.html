@@ -15,6 +15,6 @@
     <li class="navbar-item" routerLinkActive="ativo" *ngIf="auth.temPermissao('ROLE_PESQUISAR_PESSOA')">
       <a routerLink="/pessoas">Pessoas</a>
     </li>
-    <li class="navbar-item"><a routerLink="#">Logout</a></li>
+    <li class="navbar-item"><a href="javascript:;" (click)="logout()">Logout</a></li>
   </ul>
 </nav>

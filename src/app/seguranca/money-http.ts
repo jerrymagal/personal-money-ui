@@ -5,6 +5,8 @@ import { AuthConfig, AuthHttp, JwtHelper } from 'angular2-jwt';
 import { Observable } from 'rxjs/Observable';
 import { OauthService } from './oauth.service';
 
+export class NotAuthenticatedError {}
+
 @Injectable()
 export class MoneyHttp extends AuthHttp {
 
@@ -50,6 +52,10 @@ export class MoneyHttp extends AuthHttp {
 
       const chamadaNovoAccessToken = this.auth.obterNovoAccessToken()
         .then(() => {
+
+          if (this.auth.isAccessTokenInvalido()) {
+            throw new NotAuthenticatedError();
+          }
           return fn().toPromise();
         });
 

@@ -17,7 +17,16 @@ export class AuthGuard implements CanActivate {
 
     const roles = next.data.roles;
 
-    if (roles && !this.auth.temQualquerPermissao(roles)) {
+    if (this.auth.isAccessTokenInvalido()) {
+      return this.auth.obterNovoAccessToken().then(() => {
+        if (this.auth.isAccessTokenInvalido()) {
+          this.router.navigate(['/login']);
+          return false;
+        }
+        return true;
+      });
+
+    } else if (roles && !this.auth.temQualquerPermissao(roles)) {
       this.router.navigate(['/nao-atorizado']);
       return false;
     }

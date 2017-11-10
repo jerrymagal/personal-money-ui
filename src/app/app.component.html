@@ -1,4 +1,5 @@
 <app-navbar *ngIf="exibindoNavbar()"></app-navbar>
+<p-growl [(value)]="msgs" [immutable]="false" [life]="6000"></p-growl>
 <router-outlet></router-outlet>
 
 <ng2-toasty></ng2-toasty>

@@ -37,4 +37,4 @@ import { NaoAutorizadoComponent } from './nao-autorizado.component';
     Title,
     {provide: LOCALE_ID, useValue: 'pt-BR'}]
 })
-export class CoreModule { }
+export class CoreModule {}
